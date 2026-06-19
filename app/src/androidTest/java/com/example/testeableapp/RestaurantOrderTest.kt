@@ -11,7 +11,6 @@ class RestaurantOrderTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-
     @Test
     fun test_MensajePedidoVacioAlInicio() {
         composeTestRule.waitUntil(5000) {
