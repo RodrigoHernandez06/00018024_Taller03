@@ -192,7 +192,6 @@ class RestaurantOrderTest {
         composeTestRule.waitUntil(5000) {
             composeTestRule.onAllNodesWithTag("placeOrderButton").fetchSemanticsNodes().isNotEmpty()
         }
-
         composeTestRule.onNodeWithTag("placeOrderButton").performScrollTo().assertIsDisplayed()
     }
 }
