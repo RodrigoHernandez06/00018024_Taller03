@@ -12,26 +12,6 @@ class RestaurantOrderTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun test_MensajePedidoVacioAlInicio() {
-        composeTestRule.waitUntil(5000) {
-            composeTestRule.onAllNodesWithTag("emptyOrderMessage").fetchSemanticsNodes().isNotEmpty()
-        }
-        composeTestRule.onNodeWithTag("emptyOrderMessage").performScrollTo()
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("emptyOrderMessage").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("emptyOrderMessage").assertTextContains("vacío", substring = true)
-    }
-
-    @Test
-    fun test_TodosLosItemsDelMenuVisibles() {
-        MenuData.items.forEach { item ->
-            composeTestRule.onNodeWithTag("menuItem_${item.id}")
-                .performScrollTo()
-                .assertIsDisplayed()
-        }
-    }
-
-    @Test
     fun test_AgregarPedido() {
         composeTestRule.onNodeWithTag("addButton_1").performScrollTo().performClick()
         composeTestRule.waitUntil(5000) {
@@ -84,28 +64,6 @@ class RestaurantOrderTest {
     }
 
     @Test
-    fun test_TotalGeneralSeActualiza() {
-        composeTestRule.onNodeWithTag("addButton_1").performScrollTo().performClick()
-        composeTestRule.onNodeWithTag("addButton_5").performScrollTo().performClick()
-        val totalEsperado1 = "%.2f €".format(5.50 + 1.50)
-        composeTestRule.waitUntil(5000) {
-            try {
-                composeTestRule.onNodeWithTag("totalValue").performScrollTo().assertTextEquals(totalEsperado1)
-                true
-            } catch (e: AssertionError) { false }
-        }
-        composeTestRule.onNodeWithTag("incrementOrderItem_5").performScrollTo().performClick()
-
-        val totalEsperado2 = "%.2f €".format(5.50 + 1.50 * 2)
-        composeTestRule.waitUntil(5000) {
-            try {
-                composeTestRule.onNodeWithTag("totalValue").performScrollTo().assertTextEquals(totalEsperado2)
-                true
-            } catch (e: AssertionError) { false }
-        }
-    }
-
-    @Test
     fun test_CalculoTotalAlPagar() {
         composeTestRule.onNodeWithTag("addButton_1").performScrollTo().performClick()
 
@@ -127,6 +85,48 @@ class RestaurantOrderTest {
         composeTestRule.waitUntil(5000) {
             try {
                 composeTestRule.onNodeWithTag("confirmationMessage").assertTextEquals(mensajeEsperado)
+                true
+            } catch (e: AssertionError) { false }
+        }
+    }
+
+    @Test
+    fun test_MensajePedidoVacioAlInicio() {
+        composeTestRule.waitUntil(5000) {
+            composeTestRule.onAllNodesWithTag("emptyOrderMessage").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeTestRule.onNodeWithTag("emptyOrderMessage").performScrollTo()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("emptyOrderMessage").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("emptyOrderMessage").assertTextContains("vacío", substring = true)
+    }
+
+    @Test
+    fun test_TodosLosItemsDelMenuVisibles() {
+        MenuData.items.forEach { item ->
+            composeTestRule.onNodeWithTag("menuItem_${item.id}")
+                .performScrollTo()
+                .assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun test_TotalGeneralSeActualiza() {
+        composeTestRule.onNodeWithTag("addButton_1").performScrollTo().performClick()
+        composeTestRule.onNodeWithTag("addButton_5").performScrollTo().performClick()
+        val totalEsperado1 = "%.2f €".format(5.50 + 1.50)
+        composeTestRule.waitUntil(5000) {
+            try {
+                composeTestRule.onNodeWithTag("totalValue").performScrollTo().assertTextEquals(totalEsperado1)
+                true
+            } catch (e: AssertionError) { false }
+        }
+        composeTestRule.onNodeWithTag("incrementOrderItem_5").performScrollTo().performClick()
+
+        val totalEsperado2 = "%.2f €".format(5.50 + 1.50 * 2)
+        composeTestRule.waitUntil(5000) {
+            try {
+                composeTestRule.onNodeWithTag("totalValue").performScrollTo().assertTextEquals(totalEsperado2)
                 true
             } catch (e: AssertionError) { false }
         }
